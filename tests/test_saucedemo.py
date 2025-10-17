@@ -45,3 +45,16 @@ def test_verificar_catalogo(driver):
 
     assert nombre != "", "El nombre del primer producto está vacío."
     assert "$" in precio, "El precio del primer producto no contiene el símbolo '$'."
+
+def test_agregar_producto_al_carrito(driver):
+    """
+    Caso de prueba: agregar primer producto al carrito y verificarlo.
+    """
+    from utils.helpers import login, agregar_producto_al_carrito
+
+    # Login previo
+    login(driver)
+
+    # Agregar producto y validar
+    producto = agregar_producto_al_carrito(driver)
+    assert producto != "", "No se pudo recuperar el nombre del producto agregado."

@@ -67,3 +67,42 @@ def verificar_catalogo(driver, timeout=10):
     print(f"Primer producto: {first_name} - Precio: {first_price}")
     return first_name, first_price
 
+
+def agregar_producto_al_carrito(driver, timeout=10):
+    """
+    Agrega el primer producto del inventario al carrito.
+    Valida el contador del carrito y verifica la presencia del producto en la vista del carrito.
+    """
+    from selenium.webdriver.common.by import By
+    from selenium.webdriver.support.ui import WebDriverWait
+    from selenium.webdriver.support import expected_conditions as EC
+
+    wait = WebDriverWait(driver, timeout)
+
+    # Esperar los productos visibles
+    productos = wait.until(EC.presence_of_all_elements_located((By.CLASS_NAME, "inventory_item")))
+    assert len(productos) > 0, "No se encontraron productos para agregar al carrito."
+
+    # Tomar el primer producto y su botón
+    primer_producto = productos[0]
+    nombre_producto = primer_producto.find_element(By.CLASS_NAME, "inventory_item_name").text
+    boton_agregar = primer_producto.find_element(By.TAG_NAME, "button")
+
+    # Click en 'Add to cart'
+    boton_agregar.click()
+
+    # Verificar contador del carrito actualizado
+    contador = wait.until(EC.visibility_of_element_located((By.CLASS_NAME, "shopping_cart_badge")))
+    assert contador.text == "1", f"El contador del carrito muestra '{contador.text}' en lugar de '1'."
+
+    # Entrar al carrito
+    carrito_icono = driver.find_element(By.CLASS_NAME, "shopping_cart_link")
+    carrito_icono.click()
+
+    # Verificar que el producto agregado aparezca en el carrito
+    item_nombre = wait.until(EC.visibility_of_element_located((By.CLASS_NAME, "inventory_item_name")))
+    assert nombre_producto == item_nombre.text, f"El producto en el carrito no coincide: {item_nombre.text}."
+
+    return nombre_producto
+
+

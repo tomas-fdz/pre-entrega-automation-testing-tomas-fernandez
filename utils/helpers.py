@@ -38,3 +38,32 @@ def login(driver, username="standard_user", password="secret_sauce", timeout=10)
         raise AssertionError(f"URL inesperada después del login: {driver.current_url}")
     if "Products" not in title_elem.text.strip():
         raise AssertionError(f"Título inesperado: {title_elem.text.strip()}")
+
+def verificar_catalogo(driver, timeout=10):
+    """
+    Verifica que la página de inventario cargue correctamente:
+      - Título correcto
+      - Presencia de productos
+      - Obtención del primer nombre y precio
+    """
+    from selenium.webdriver.common.by import By
+    from selenium.webdriver.support.ui import WebDriverWait
+    from selenium.webdriver.support import expected_conditions as EC
+
+    wait = WebDriverWait(driver, timeout)
+
+    # Validar título
+    title_el = wait.until(EC.visibility_of_element_located((By.CLASS_NAME, "title")))
+    assert "Products" in title_el.text, f"Título inesperado: {title_el.text}"
+
+    # Verificar productos
+    items = wait.until(EC.presence_of_all_elements_located((By.CLASS_NAME, "inventory_item")))
+    assert len(items) > 0, "No se encontraron productos en el inventario."
+
+    # Extraer nombre y precio del primero
+    first_name = items[0].find_element(By.CLASS_NAME, "inventory_item_name").text
+    first_price = items[0].find_element(By.CLASS_NAME, "inventory_item_price").text
+
+    print(f"Primer producto: {first_name} - Precio: {first_price}")
+    return first_name, first_price
+

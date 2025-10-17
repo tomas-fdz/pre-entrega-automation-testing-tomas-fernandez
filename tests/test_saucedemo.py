@@ -32,3 +32,16 @@ def test_login_exitoso(driver):
     assert "Products" in title_el.text, "El título de la página no contiene 'Products'."
     assert "/inventory.html" in driver.current_url, "No se redirigió correctamente al inventario."
     assert "Swag Labs" in driver.title, "El título del navegador no contiene 'Swag Labs'."
+
+def test_verificar_catalogo(driver):
+    """
+    Valida la carga del inventario y la presencia de productos.
+    """
+    from utils.helpers import login, verificar_catalogo
+
+    # Login previo para acceder al inventario
+    login(driver)
+    nombre, precio = verificar_catalogo(driver)
+
+    assert nombre != "", "El nombre del primer producto está vacío."
+    assert "$" in precio, "El precio del primer producto no contiene el símbolo '$'."

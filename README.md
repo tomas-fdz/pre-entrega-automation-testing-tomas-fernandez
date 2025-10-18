@@ -1,5 +1,3 @@
-
-````markdown
 # Pre-Entrega Automation Testing – Tomas Fernandez
 
 Automatización web con **Python + Selenium + Pytest** sobre [saucedemo.com](https://www.saucedemo.com/).  

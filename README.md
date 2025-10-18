@@ -12,15 +12,6 @@ Python 3.13 · Selenium · Pytest · Pytest-HTML · Git/GitHub
 
 ---
 
-## ⚙️ Instalación
-```bash
-git clone https://github.com/<tu_usuario>/pre-entrega-automation-testing-tomas-fernandez.git
-cd pre-entrega-automation-testing-tomas-fernandez
-python -m venv venv
-venv\Scripts\activate
-pip install -r requirements.txt
-````
-
 ## 🧪 Ejecución
 
 ```bash
